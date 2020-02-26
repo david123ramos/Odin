@@ -20,7 +20,7 @@ public class Randomize extends JButton {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String text = j.getText();
-                int arrTam = text.equals("") ? 0 : Integer.parseInt(text);
+                int arrTam = text.equals("") ? 100 : Integer.parseInt(text);
                 int[] aux = r.ints(arrTam, 1, 101).toArray();
                 //for(int i : aux){System.out.println(i);}
                 

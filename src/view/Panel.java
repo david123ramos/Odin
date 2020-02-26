@@ -47,10 +47,10 @@ public class Panel extends JPanel{
             int green = (int) (numbers.length > 127 ? i + 50 :  i* 1.74);
             int blue =  numbers.length > 127 ? i : i + 54 ;
             
-            
             g.setColor(new Color(red, green, blue));
+            
             g.fillRect(i * width ,  height - calculatedHeight, width , calculatedHeight );
-            g.drawString(i+"", i * width , height - calculatedHeight);
+            g.drawString(numbers[i]+"", i * width , height - calculatedHeight);
             
         }
     }
@@ -67,6 +67,4 @@ public class Panel extends JPanel{
         Arrays.sort(this.numbers);
         this.repaint();
     }
-    
-   
 }
