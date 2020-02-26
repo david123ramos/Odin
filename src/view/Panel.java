@@ -43,9 +43,14 @@ public class Panel extends JPanel{
             g.drawRect( i * width - 1 , height - calculatedHeight   , width + 1,   calculatedHeight + 1 );
             
             //fill rectangle
-            g.setColor(new Color(i*2 , calculatedHeight / 3, width * 4));
+            int red = numbers.length > 127 ? i : i*2;
+            int green = (int) (numbers.length > 127 ? i + 50 :  i* 1.74);
+            int blue =  numbers.length > 127 ? i : i + 54 ;
+            
+            
+            g.setColor(new Color(red, green, blue));
             g.fillRect(i * width ,  height - calculatedHeight, width , calculatedHeight );
-            g.drawString(numbers[i]+"", i * width , height - calculatedHeight);
+            g.drawString(i+"", i * width , height - calculatedHeight);
             
         }
     }
