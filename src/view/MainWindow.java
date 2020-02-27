@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- *
  * @author David
  */
 public class MainWindow extends JFrame{
@@ -28,8 +27,8 @@ public class MainWindow extends JFrame{
         JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER));
         top.setMaximumSize(new Dimension(600, 200));
         
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttons.setMaximumSize(new Dimension(600, 200));
+        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        buttons.setMaximumSize(new Dimension(1280, 200));
         
         JLabel title = new JLabel("☼ Odin ☉");
         title.setFont(new Font("Serif", Font.BOLD, 70));
@@ -51,7 +50,7 @@ public class MainWindow extends JFrame{
 
             @Override
             public void keyPressed(KeyEvent ke) {
-               if( !Character.toString(ke.getKeyChar()).matches("^([0-9]|[0-9][0-9]|1[0-9][0-9]|2[0][0])$") || f.getText().length() > 2){
+               if( !Character.toString(ke.getKeyChar()).matches("^([0-9]|[0-9][0-9]|1[0-9][0-9]|2[0][0])$") ){
                     errorKey = true;
                 }else{
                     errorKey = false;
@@ -72,21 +71,22 @@ public class MainWindow extends JFrame{
         f.setPreferredSize(new Dimension(30, 25));
         insert.add(t);
         insert.add(f);
-    
         
-        
-        //recebe o painel que ele vai ficar 'observando'
-
+        //recebe o painel que ele vai ficar 'observando' e o field da escolha do tamanho do array
         Randomize btn = new Randomize("Gerar números", p, f);
         
         //recebe o painel, cria um novo array, seta no painel e repinta a tela quando clicado
         SortButton sort = new SortButton("Organize!", p);
         
+        //Escolhe a forma de vizualização do gráfico
+        Draw[] d = {new BarChart(), new GoldenSpiral()};
+        SelectDrawForm select = new SelectDrawForm(d);
         
         top.add(title);
         buttons.add(insert);
         buttons.add(btn);
         buttons.add(sort);
+        buttons.add(select);
         
         this.setResizable(false);
         this.add(top);
