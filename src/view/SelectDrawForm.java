@@ -5,7 +5,9 @@
  */
 package view;
 
+import Painters.Painter;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.JComboBox;
 
 /**
@@ -14,12 +16,25 @@ import javax.swing.JComboBox;
  */
 public class SelectDrawForm extends JComboBox{
 
-    public SelectDrawForm(Draw[] forms) {
-        super(forms);
-        this.addItemListener((ItemEvent e) -> {
-            Draw d = (Draw)e.getItem();
-            System.out.println("Você selecionou o item!");
+    public SelectDrawForm(Painter[] forms, Panel p) {
+       
+
+        for (Painter form : forms) {
+            this.addItem(form.getName());
+        }
+        this.setToolTipText("Escolha o modo de visualização");
+        this.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String n = (String) SelectDrawForm.this.getSelectedItem();
+                
+                for(Painter d : forms){
+                    if(d.getName().equals(n)){
+                        p.setD(d);
+                        p.repaint();
+                    }
+                }
+            }
         });
-    
     }
 }

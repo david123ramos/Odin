@@ -2,7 +2,6 @@
 package view;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
 import javax.swing.JButton;
 
@@ -17,11 +16,24 @@ public class SortButton extends JButton{
     public SortButton(String name, Panel p) {
         super(name);
         
-        this.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                p.sort();
-            }
+        
+
+        this.addActionListener((ActionEvent e) -> {
+            
+           if(p.getExecutionAlg() != null){
+               p.getExecutionAlg().stop();
+               p.repaint(true);
+           }
+            
+            Thread t = new Thread( new Runnable() {
+                @Override
+                public void run() {
+                    p.sort();
+                }
+            });
+            
+            t.start();
+            p.setExecutionAlg(t);
         });
     
     }

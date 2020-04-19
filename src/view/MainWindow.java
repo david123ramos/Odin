@@ -1,15 +1,24 @@
 package view;
 
+import Painters.BarChart;
+import Painters.Painter;
+import Painters.Line;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import sortingAlgorithms.BubbleSort;
+import sortingAlgorithms.SelectionSort;
+import sortingAlgorithms.SortingInterface;
 
 /**
  * @author David
@@ -40,7 +49,6 @@ public class MainWindow extends JFrame{
         JLabel t = new JLabel("Insira o tamanho do array (1 - 200)");
         JTextField f = new JTextField();
         
-        System.out.println("asudasidua"+f.getText()+"<-----");
         
         //permitir apenas numeros
         f.addKeyListener(new KeyListener() {
@@ -79,16 +87,42 @@ public class MainWindow extends JFrame{
         SortButton sort = new SortButton("Organize!", p);
         
         //Escolhe a forma de vizualização do gráfico
-        Draw[] d = {new BarChart(), new GoldenSpiral()};
-        SelectDrawForm select = new SelectDrawForm(d);
+        Painter[] d = {new BarChart(), new Line()};
+        SelectDrawForm select = new SelectDrawForm(d, p);
+        
+        //Velocidade de execução do algoritmo
+        JSpinner vel = new JSpinner(new SpinnerNumberModel(1, 0, 500, 10));
+        vel.setToolTipText("Escolha a velocidade que o algoritmo vai executar");
+        
+        vel.addChangeListener(cg-> {
+            p.setSpeed((int) vel.getValue() );
+        });
+        p.setSpeed((int) vel.getValue() );
+        
+        
+        JButton close = new JButton("Parar Algoritmo");
+        close.addActionListener(ev -> {
+           if( p.getExecutionAlg() != null){
+               p.getExecutionAlg().stop();
+               p.repaint(true);
+           }
+        });
+        
+
+        //escolhe o algoritmo a ser usado;
+        SortingInterface[] algs = {new BubbleSort(p), new SelectionSort(p)};
+        SelectAlgorithm selectAlg = new SelectAlgorithm(algs, p, vel);
         
         top.add(title);
         buttons.add(insert);
         buttons.add(btn);
         buttons.add(sort);
         buttons.add(select);
+        buttons.add(selectAlg);
+        buttons.add(vel);
+        buttons.add(close);
         
-        this.setResizable(false);
+        //this.setResizable(false);
         this.add(top);
         this.add(buttons);
         this.add(p);

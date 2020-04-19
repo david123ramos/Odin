@@ -1,12 +1,16 @@
 
 package view;
 
+import Painters.BarChart;
+import Painters.Painter;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.JPanel;
+import sortingAlgorithms.BubbleSort;
+import sortingAlgorithms.SortingInterface;
+import utils.Value;
 
 /**
  *
@@ -14,13 +18,25 @@ import javax.swing.JPanel;
  */
 public class Panel extends JPanel{
     
-    private int[] numbers;
+    //private List numbers;
     //ArrayList<Integer> numbers  = (ArrayList<Integer>) Arrays.stream(aux).boxed().collect((Collector) Collectors.toList()) ;
-    private Draw drawForm = new BarChart();
-
+    private Painter drawForm = new BarChart();
+    private SortingInterface algorithm;
+    private boolean ramdomized;
+    private ArrayList<Value> numbers;
+    private int speed;
+    private Thread executionAlg;
+    
     public Panel(){
-        Random random = new Random();
-        this.numbers = random.ints(100, 1,101).toArray();
+        this.numbers = new ArrayList<>();
+        //default
+        this.algorithm = new BubbleSort(this);
+        for(int i =0; i<100; i++){
+            this.numbers.add(new Value(i, Color.BLACK ));
+        }
+        
+        Collections.shuffle(numbers);
+        
     }
 
     @Override
@@ -28,24 +44,65 @@ public class Panel extends JPanel{
         drawForm.draw(g, this);
     }
 
-    public int[] getNumbers() {
+    public ArrayList getNumbers() {
         return numbers;
     }
 
-    public void setNumbers(int[] numbers) {
+    public void setNumbers(ArrayList numbers) {
         this.numbers = numbers;
     }
     
     public void sort(){
-        Arrays.sort(this.numbers);
-        this.repaint();
+
+        this.algorithm.sort( this.numbers);
+        this.repaint(true);
     }
 
-    public Draw getD() {
+    public SortingInterface getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(SortingInterface algorithm) {
+        this.algorithm = algorithm;
+    }
+
+    public Painter getD() {
         return drawForm;
     }
 
-    public void setD(Draw d) {
+    public void setD(Painter d) {
         this.drawForm = d;
+    }
+
+    public boolean isRamdomized() {
+        return ramdomized;
+    }
+
+    public void setRamdomized(boolean ramdomized) {
+        this.ramdomized = ramdomized;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public Thread getExecutionAlg() {
+        return executionAlg;
+    }
+
+    public void setExecutionAlg(Thread executionAlg) {
+        this.executionAlg = executionAlg;
+    }
+    
+    //seta a cor default pro array de valores e usa o método de repaint
+    public void repaint(boolean reset){
+        this.numbers.forEach((v) -> {
+            v.setColor(Color.BLACK);
+        });
+        this.repaint();
     }
 }
